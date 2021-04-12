@@ -32,15 +32,15 @@ jobs:
       - run:
           name: Demo param parsing
           command: |
-            export BNAME=$(echo "<< parameters.browser >>" | awk '{print $NF}')
-            export BVER=$(echo "<< parameters.browser >>" | awk 'NF{NF-=1}1')
-            echo "Browser name: $BNAME"
-            echo "Browser version: $BVER"
-      - run:
-          name: See if env vars pass between commands
-          command: |
-            echo "Browser name in later cmd: $BNAME"
-            echo "Browser version in later cmd: $BVER"
+            name=$(echo "<< parameters.browser >>" | awk '{print $NF}')
+            version=$(echo "<< parameters.browser >>" | awk 'NF{NF-=1}1')
+
+            if [ $name eq latest ]
+              name=""
+            fi
+
+            echo "Browser name: $name"
+            echo "Browser version: $version"
       - run:
           name: Run tests
           command: npm test
@@ -50,6 +50,22 @@ workflows:
     jobs:
       - build
       - test:
-          browser: internet explorer 11
           requires:
             - build
+          matrix:
+            parameters:
+              browser:
+                - internet explorer 11
+                - internet explorer 10
+                - firefox latest
+                - firefox 78
+                - firefox 68
+                - chrome latest
+                - safari 14
+                - safari 13
+                - safari 12
+                - safari 11
+                - safari 10
+                - safari 9
+                - safari 8
+                - MicrosoftEdge latest
