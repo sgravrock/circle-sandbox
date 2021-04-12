@@ -1,7 +1,36 @@
 version: 2.1
 orbs:
   node: circleci/node@3.0.0
+
+executors:
+  node14:
+    docker:
+      - image: circleci/node:14
+    resource_class: small
+
+jobs:
+  build:
+    executor: node14
+    steps:
+      - checkout
+      - run:
+          name: Install dependencies
+          command: npm install
+  test:
+    executor: node14
+    steps:
+      - checkout
+      - run:
+          name: List files
+          command: find . -print
+      - run:
+          name: Run tests
+          command: npm test
+
 workflows:
   node-tests:
     jobs:
-      - node/test
+      - build
+      - test
+          requires:
+            - build
