@@ -7,7 +7,7 @@ executors:
     docker:
       - image: circleci/node:14
     resource_class: small
-    working_directory: /tmp
+    working_directory: ~/circle-sandbox
 
 jobs:
   build:
@@ -18,18 +18,17 @@ jobs:
           name: Install dependencies
           command: npm install
       - persist_to_workspace:
-          root: workspace
+          root: .
           paths:
-            - node_modules
+            - .
   test:
     executor: node14
     steps:
-      - checkout
       - attach_workspace:
-          at: /tmp/workspace
+          at: .
       - run:
           name: List files
-          command: find /tmp/workspace -print
+          command: find . -print
       - run:
           name: Run tests
           command: npm test
