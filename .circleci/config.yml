@@ -22,13 +22,25 @@ jobs:
           paths:
             - .
   test:
+    parameters:
+      browser:
+        type: string
     executor: node14
     steps:
       - attach_workspace:
           at: .
       - run:
-          name: List files
-          command: find . -print
+          name: Demo param parsing
+          command: |
+            export BNAME=$(echo "<< parameters.browser >>" | awk '{print $NF}')
+            export BVER=$(echo "<< parameters.browser >>" | awk 'NF{NF-=1}1')
+            echo "Browser name: $BNAME"
+            echo "Browser version: $BVER"
+      - run:
+          name: See if env vars pass between commands
+          command: |
+            echo "Browser name in later cmd: $BNAME"
+            echo "Browser version in later cmd: $BVER"
       - run:
           name: Run tests
           command: npm test
@@ -38,5 +50,6 @@ workflows:
     jobs:
       - build
       - test:
+          browser: internet explorer 11
           requires:
             - build
