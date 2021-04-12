@@ -32,8 +32,8 @@ jobs:
       - run:
           name: Demo param parsing
           command: |
-            name=$(echo "<< parameters.browser >>" | awk '{print $NF}')
-            version=$(echo "<< parameters.browser >>" | awk 'NF{NF-=1}1')
+            name=$(echo "<< parameters.browser >>" | awk 'NF{NF-=1}1')
+            version=$(echo "<< parameters.browser >>" | awk '{print $NF}')
 
             if [ $name = latest ]; then
               name=""
