@@ -35,8 +35,8 @@ jobs:
             name=$(echo "<< parameters.browser >>" | awk 'NF{NF-=1}1')
             version=$(echo "<< parameters.browser >>" | awk '{print $NF}')
 
-            if [ $name = latest ]; then
-              name=""
+            if [ $version = latest ]; then
+              version=""
             fi
 
             echo "Browser name: $name"
