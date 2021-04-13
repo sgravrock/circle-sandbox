@@ -31,7 +31,7 @@ jobs:
           name: Kill something from the same step
           command: |
             find . -print
-            .circleci/signalme &
+            ./.circleci/signalme &
             sleep 1
             kill $(ps | grep signalme | grep -v grep | awk '{print $1}')
             echo Any left?
@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Start something that we'll kill in a later step
           command: |
-            .circleci/signalme &
+            ./.circleci/signalme &
             sleep 1
       - run:
           name: Kill something from an earlier step
