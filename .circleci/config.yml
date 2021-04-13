@@ -42,9 +42,13 @@ jobs:
             echo "Browser name: $name"
             echo "Browser version: $version"
 
-            echo "Testing error control"
+            echo "Testing error handling"
+            set +errexit
             false
-            echo "Still continued despite an error"
+            exitcode=$?
+            echo "Still going despite exitcode of $exitcode."
+            echo "Will now exit with that."
+            exit $exitcode
       - run:
           name: Run tests
           command: npm test
