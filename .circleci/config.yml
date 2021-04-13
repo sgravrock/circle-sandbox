@@ -14,13 +14,43 @@ jobs:
     executor: node14
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: npm install
+#      - run:
+#          name: Install dependencies
+#          command: npm install
       - persist_to_workspace:
           root: .
           paths:
             - .
+
+  kill_from_same_step:
+    executor: node14
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Kill something from the same step
+          command: |
+            .circleci/signalme &
+            sleep 1
+            kill $(ps | grep signalme | grep -v grep | awk '{print $1}')
+            echo Any left?
+            ps | grep signalme
+
+  kill_from_other_step:
+    executor: node14
+    steps:
+      - run:
+          name: Start something that we'll kill in a later step
+          command: |
+            .circleci/signalme &
+            sleep 1
+      - run:
+          name: Kill something from an earlier step
+          command: |
+            kill $(ps | grep signalme | grep -v grep | awk '{print $1}')
+            echo Any left?
+            ps | grep signalme
+      
   test:
     parameters:
       browser:
@@ -59,14 +89,16 @@ jobs:
 workflows:
   node-tests:
     jobs:
+      - kill_from_same_step
+      - kill_from_other_step
       - build
-      - test:
-          requires:
-            - build
-          matrix:
-            parameters:
-              browser:
-                - internet explorer 11
+#      - test:
+#          requires:
+#            - build
+#          matrix:
+#            parameters:
+#              browser:
+#                - internet explorer 11
 #                - internet explorer 10
 #                - firefox latest
 #                - firefox 78
