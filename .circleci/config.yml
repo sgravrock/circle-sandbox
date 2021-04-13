@@ -30,7 +30,8 @@ jobs:
       - run:
           name: Kill something from the same step
           command: |
-            ls -l ./.circleci/signalme &
+            find . -print
+            ls -l ./.circleci/signalme
             ./.circleci/signalme &
             sleep 1
             kill $(ps | grep signalme | grep -v grep | awk '{print $1}')
