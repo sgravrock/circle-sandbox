@@ -32,7 +32,10 @@ jobs:
             find . -print
             ./.circleci/signalme &
             sleep 1
-            kill $(ps | grep signalme | grep -v grep | awk '{print $1}')
+            ps | grep signalme
+            pid=$(ps | grep signalme | grep -v grep | awk '{print $1}')
+            echo Killing PID: $pid
+            kill $pid
             echo Any left?
             ps | grep signalme
 
