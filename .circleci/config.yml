@@ -41,6 +41,10 @@ jobs:
 
             echo "Browser name: $name"
             echo "Browser version: $version"
+
+            echo "Testing error control"
+            false
+            echo "Still continued despite an error"
       - run:
           name: Run tests
           command: npm test
@@ -56,16 +60,16 @@ workflows:
             parameters:
               browser:
                 - internet explorer 11
-                - internet explorer 10
-                - firefox latest
-                - firefox 78
-                - firefox 68
-                - chrome latest
-                - safari 14
-                - safari 13
-                - safari 12
-                - safari 11
-                - safari 10
-                - safari 9
-                - safari 8
-                - MicrosoftEdge latest
+#                - internet explorer 10
+#                - firefox latest
+#                - firefox 78
+#                - firefox 68
+#                - chrome latest
+#                - safari 14
+#                - safari 13
+#                - safari 12
+#                - safari 11
+#                - safari 10
+#                - safari 9
+#                - safari 8
+#                - MicrosoftEdge latest
