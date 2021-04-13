@@ -34,7 +34,7 @@ jobs:
             sleep 1
             echo "Processes:"
             ps -ef
-            pid=$(ps | grep signalme | grep -v grep | awk '{print $1}')
+            pid=$(ps -ef | grep signalme | grep -v grep | awk '{print $2}')
             echo Killing PID: $pid
             kill $pid
             echo Any left?
@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Kill something from an earlier step
           command: |
-            kill $(ps | grep signalme | grep -v grep | awk '{print $1}')
+            kill $(ps -ef | grep signalme | grep -v grep | awk '{print $2}')
             echo Any left?
             ps | grep signalme
       
