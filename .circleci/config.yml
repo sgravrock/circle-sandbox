@@ -43,7 +43,7 @@ jobs:
             echo "Browser version: $version"
 
             echo "Testing error handling"
-            set +errexit
+            set +o errexit
             false
             exitcode=$?
             echo "Still going despite exitcode of $exitcode."
