@@ -1,0 +1,11 @@
+#!/bin/sh
+
+function report() {
+	echo "I got a signal!"
+}
+
+trap report EXIT
+echo "Waiting for a signal"
+while true; do
+	sleep 60
+done
