@@ -38,7 +38,7 @@ jobs:
             echo Killing PID: $pid
             kill $pid
             echo Any left?
-            ps | grep signalme
+            ps -ef | grep signalme
 
   kill_from_other_step:
     executor: node14
@@ -52,9 +52,11 @@ jobs:
       - run:
           name: Kill something from an earlier step
           command: |
+            echo "Processes:"
+            ps -ef
             kill $(ps -ef | grep signalme | grep -v grep | awk '{print $2}')
             echo Any left?
-            ps | grep signalme
+            ps -ef | grep signalme
       
   test:
     parameters:
