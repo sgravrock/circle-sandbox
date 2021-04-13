@@ -33,7 +33,7 @@ jobs:
             ./.circleci/signalme &
             sleep 1
             echo "Processes:"
-            ps 
+            ps -ef
             pid=$(ps | grep signalme | grep -v grep | awk '{print $1}')
             echo Killing PID: $pid
             kill $pid
