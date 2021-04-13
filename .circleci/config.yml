@@ -52,6 +52,9 @@ jobs:
       - run:
           name: Run tests
           command: npm test
+      - run:
+          name: Any snakes on this plane?
+          command: /usr/bin/env python3
 
 workflows:
   node-tests:
