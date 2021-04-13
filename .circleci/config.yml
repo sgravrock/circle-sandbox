@@ -38,7 +38,7 @@ jobs:
             echo Killing PID: $pid
             kill $pid
             echo Any left?
-            ps -ef | grep signalme
+            ps -ef | grep signalme || true
 
   kill_from_other_step:
     executor: node14
@@ -47,7 +47,7 @@ jobs:
       - run:
           name: Start something that we'll kill in a later step
           command: |
-            ./.circleci/signalme &
+            nohup ./.circleci/signalme 0<&- &>/tmp/signalme.log &
             sleep 1
       - run:
           name: Kill something from an earlier step
@@ -56,7 +56,9 @@ jobs:
             ps -ef
             kill $(ps -ef | grep signalme | grep -v grep | awk '{print $2}')
             echo Any left?
-            ps -ef | grep signalme
+            ps -ef | grep signalme || true
+            echo "Output:"
+            cat /tmp/signalme.log
       
   test:
     parameters:
